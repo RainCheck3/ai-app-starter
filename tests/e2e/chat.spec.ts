@@ -51,7 +51,9 @@ test("stops and recovers from a failed request", async ({ page }) => {
   );
   await page.getByRole("textbox").fill("Hello again");
   await page.getByRole("button", { name: "Send message", exact: true }).click();
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "Couldn't complete that response" })
+  ).toBeVisible();
   await page.unroute("**/api/chat");
   await page.getByRole("button", { name: "Retry" }).click();
   await expect(
