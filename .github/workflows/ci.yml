@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Web quality checks
+    name: AI app quality checks
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -40,3 +40,9 @@ jobs:
 
       - name: Check formatting, lint, and build
         run: pnpm check
+
+      - name: Install browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser tests
+        run: pnpm test:e2e

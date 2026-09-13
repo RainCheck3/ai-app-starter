@@ -4,7 +4,7 @@ Guidance for AI coding agents working in this repository.
 
 ## Project Type
 
-This is a reusable Next.js web app starter template for side projects, product experiments, dashboards, tools, landing pages, SaaS apps, AI app frontends, and mobile companion web apps.
+This is a reusable Next.js AI app starter with streaming chat, server-side OpenAI Responses integration, and deterministic demo mode.
 
 Keep the base template lean, stable, and broadly applicable.
 
@@ -73,7 +73,6 @@ Do not add the following to the base template unless explicitly requested:
 - email provider
 - analytics
 - error tracking
-- AI SDKs
 - background jobs
 - queue systems
 - deployment-specific configuration
@@ -94,6 +93,8 @@ Only add a dependency when it meaningfully improves maintainability, user experi
 - Any new environment variable should be documented in `.env.example`.
 
 ## Quality Bar
+
+Use the existing AI SDK for streaming and client state. Keep API keys and model configuration server-only. Validate all client messages; never accept client-supplied system instructions or provider settings. Tests must use demo mode or mocked providers, with no paid API calls. Run `pnpm test:e2e` after `pnpm build` when changing the chat workflow.
 
 Before finalizing a change, ensure these pass:
 

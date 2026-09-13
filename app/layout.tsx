@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./chat.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Web App Starter",
-    template: "%s | Web App Starter",
+    default: "AI Starter",
+    template: "%s | AI Starter",
   },
-  description:
-    "A lean Next.js starter for side projects, product experiments, and AI-powered web apps.",
+  description: "A focused workspace for conversations and ideas.",
 };
 
 export default function RootLayout({

@@ -1,39 +1,27 @@
 # Decisions
 
-## Keep the base web starter lean
+## One Next.js application
 
-The base `web-app-starter` intentionally does not include a database, authentication, payments, analytics, email, error tracking, or AI SDKs.
+Derived from the web starter, retaining its tooling and Git history. UI and server route share one deployment. Add a Python service when a specific product needs Python libraries or independently operated workers.
 
-Reason: this template should support many product types, including landing pages, dashboards, simple tools, AI frontends, SaaS products, and mobile companion apps.
+## AI SDK for streaming
 
-Project-specific capabilities should be added only when needed.
+The AI SDK owns stream framing, client message state, cancellation, and provider adaptation. OpenAI Responses is the initial server-side provider. The provider is isolated in `lib/ai.ts`; the browser never chooses a model or supplies credentials.
 
-## Use pnpm
+References: [AI SDK](https://ai-sdk.dev/docs/introduction) and [OpenAI streaming](https://developers.openai.com/api/docs/guides/streaming-responses).
 
-This template uses `pnpm` for package management.
+## Explicit demo mode
 
-Reason: it is fast, disk-efficient, and works well for modern TypeScript projects.
+The checked-in environment example enables a visibly labeled deterministic demo. Missing credentials otherwise disable chat. CI has no API secrets and uses both a mocked SDK model and the demo route to test streaming.
 
-The package manager version is pinned in `package.json` so Corepack can use the expected pnpm release.
+## Bounded text input
 
-## Use nvm
+Only user and assistant text is accepted. Client system roles, file URLs, and tool parts are rejected. Body bytes, message count, and conversation size are bounded before calling a provider. Provider errors are replaced with a generic public message.
 
-This template includes `.nvmrc` so projects can pin and reuse a known Node version.
+## Lean product boundary
 
-## Avoid build-time network dependencies
+No persistence, auth, payments, RAG, or tools yet. Markdown is rendered without raw HTML or remote images. Origin validation reduces accidental cross-site calls but does not replace authentication or rate limiting. Live deployments need those controls.
 
-This template uses system font stacks rather than fetching hosted fonts during `next build`.
+## Reuse existing tooling
 
-Reason: side projects and CI jobs should build reliably even when network access is unavailable or restricted.
-
-## Prefer Server Components by default
-
-In the Next.js App Router, Server Components should be the default. Client Components should be used only when browser-side interactivity is required.
-
-## Run the local quality gate in CI
-
-GitHub Actions runs `pnpm check` with the repository's Node and pnpm versions and a frozen lockfile install. This keeps formatting, lint, and production build checks consistent with local development.
-
-## Keep AI coding instructions tool-agnostic
-
-This project may be edited with Cursor, Codex, Claude Code, or other coding agents. Repository instructions should describe project conventions rather than tool-specific behavior.
+Node and pnpm stay pinned to the web starter versions. Vitest covers the route contract and mocked provider behavior; Playwright covers the real chat transport at desktop and mobile widths. GitHub Actions runs both.
