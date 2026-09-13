@@ -30,6 +30,10 @@ Reason: side projects and CI jobs should build reliably even when network access
 
 In the Next.js App Router, Server Components should be the default. Client Components should be used only when browser-side interactivity is required.
 
+## Run the local quality gate in CI
+
+GitHub Actions runs `pnpm check` with the repository's Node and pnpm versions and a frozen lockfile install. This keeps formatting, lint, and production build checks consistent with local development.
+
 ## Keep AI coding instructions tool-agnostic
 
 This project may be edited with Cursor, Codex, Claude Code, or other coding agents. Repository instructions should describe project conventions rather than tool-specific behavior.
